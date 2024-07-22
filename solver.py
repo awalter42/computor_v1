@@ -93,11 +93,11 @@ def solve_second_degree(equation):
 	if disc > 0:
 		#2 solutions
 		disc = disc**(1/2)
-		x1 = (-equation[1] + disc)/(2*equation[2])
-		x2 = (-equation[1] - disc)/(2*equation[2])
+		x1 = format((-equation[1] + disc)/(2*equation[2]), '.3f')
+		x2 = format((-equation[1] - disc)/(2*equation[2]), '.3f')
 		print('Discriminant is strictly positive, the two solutions are:', x1, x2, sep='\n')
 	elif disc == 0:
-		x = -equation[1] / (2*equation[2])
+		x = format(-equation[1] / (2*equation[2]), '.3f')
 		print('Discriminant is 0, therefore there is a single solution:', x, sep = '\n')
 	else:
 		print('Discriminant is strictly negative, there is no solution')
@@ -115,7 +115,7 @@ if __name__ =='__main__':
 		print('The polynomial degree is strictly greater than 2, I can\'t solve.')
 		exit()
 	if degree == 1:
-		print(f'The solution is: {(equation[0] * -1) / equation[1]}')
+		print(f'The solution is: {format((equation[0] * -1) / equation[1], '.3f')}')
 		exit()
 	if degree == 2:
 		solve_second_degree(equation)
