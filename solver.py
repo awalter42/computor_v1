@@ -2,15 +2,18 @@ import sys
 import re
 
 def make_member_dict(member):
-	m = {}
+	m = {0: 0, 1: 0, 2: 0}
 	for e in member:
 		e = e.split('*')
 		if len(e) == 1 or e[1] == 'X^0':
-			m[0] = float(e[0])
+			m[0] += float(e[0])
 		elif len(e) == 2 and (e[1] == 'X' or e[1] == 'X^1'):
-			m[1] = float(e[0])
+			m[1] += float(e[0])
 		elif len(e) == 2:
-			m[int(e[1][2:])] = float(e[0])
+			if int(e[1][2:]) not in m.keys():
+				m[int(e[1][2:])] = float(e[0])
+			else:
+				m[int(e[1][2:])] += float(e[0])
 		else:
 			print('bad input?', file=sys.stderr)
 	return m
@@ -93,11 +96,11 @@ def solve_second_degree(equation):
 	if disc > 0:
 		#2 solutions
 		disc = disc**(1/2)
-		x1 = format((-equation[1] + disc)/(2*equation[2]), '.3f')
-		x2 = format((-equation[1] - disc)/(2*equation[2]), '.3f')
+		x1 = round((-equation[1] + disc)/(2*equation[2]), 3)
+		x2 = round((-equation[1] - disc)/(2*equation[2]), 3)
 		print('Discriminant is strictly positive, the two solutions are:', x1, x2, sep='\n')
 	elif disc == 0:
-		x = format(-equation[1] / (2*equation[2]), '.3f')
+		x = round(-equation[1] / (2*equation[2]), 3)
 		print('Discriminant is 0, therefore there is a single solution:', x, sep = '\n')
 	else:
 		print('Discriminant is strictly negative, there is no solution')
@@ -115,7 +118,7 @@ if __name__ =='__main__':
 		print('The polynomial degree is strictly greater than 2, I can\'t solve.')
 		exit()
 	if degree == 1:
-		print(f'The solution is: {format((equation[0] * -1) / equation[1], '.3f')}')
+		print(f'The solution is: {round((equation[0] * -1) / equation[1], 3)}')
 		exit()
 	if degree == 2:
 		solve_second_degree(equation)
