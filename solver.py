@@ -38,6 +38,10 @@ def reduce_equation(left, right):
 
 
 def parse(equation):
+	equation = equation.upper()
+	if '=' not in equation:
+		print("that is not an equation")
+		exit()
 
 	splitted = equation.split('=')
 	splitted[0] = splitted[0].replace('-', ';-')
