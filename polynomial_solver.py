@@ -43,21 +43,27 @@ def parse(equation):
 		print("that is not an equation")
 		exit()
 
-	splitted = equation.split('=')
-	splitted[0] = splitted[0].replace('-', ';-')
-	splitted[1] = splitted[1].replace('-', ';-')
-	splitted[0] = re.split('\+|;', splitted[0])
-	splitted[1] = re.split('\+|;', splitted[1])
+	try:
+		splitted = equation.split('=')
+		if splitted[1] == '':
+			exit()
+		splitted[0] = splitted[0].replace('-', ';-')
+		splitted[1] = splitted[1].replace('-', ';-')
+		splitted[0] = re.split('\+|;', splitted[0])
+		splitted[1] = re.split('\+|;', splitted[1])
 
-	if splitted[0][0] == '':
-		splitted[0] = splitted[0][1:]
-	if splitted[1][0] == '':
-		splitted[1] = splitted[1][1:]
+		if splitted[0][0] == '':
+			splitted[0] = splitted[0][1:]
+		if splitted[1][0] == '':
+			splitted[1] = splitted[1][1:]
 
-	left = make_member_dict(splitted[0])
-	right = make_member_dict(splitted[1])
+		left = make_member_dict(splitted[0])
+		right = make_member_dict(splitted[1])
 
-	return reduce_equation(left, right)
+		return reduce_equation(left, right)
+	except:
+		print("There seemed to be a problem with your equation, make sure everything is well written")
+		exit()
 
 
 def show_equation(equation):
@@ -107,7 +113,12 @@ def solve_second_degree(equation):
 		x = round(-equation[1] / (2*equation[2]), 3)
 		print('Discriminant is 0, therefore there is a single solution:', x, sep = '\n')
 	else:
-		print('Discriminant is strictly negative, there is no solution')
+		disc = abs(disc)**(1/2)
+		real = round(-equation[1] / (2*equation[2]), 3)
+		imaginary = round(abs(disc / (2*equation[2])), 3)
+		print('Discriminant is strictly negative, the solutions are imaginary:')
+		print(f'{real} + {imaginary}*i')
+		print(f'{real} - {imaginary}*i')
 
 
 if __name__ =='__main__':
@@ -115,7 +126,14 @@ if __name__ =='__main__':
 		print('wrong number of arguments', file = sys.stderr)
 		exit()
 
-	equation = parse(sys.argv[1].replace(" ", ""))
+	equation = sys.argv[1].replace(" ", "")
+	accepted = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '+', '*', 'X', '^', '.', '=']
+	for c in equation:
+		if str(c) not in accepted:
+			print (f"you used some illegal characters here: {c}")
+			exit()
+
+	equation = parse(equation)
 	show_equation(equation)
 	degree = get_degree(equation)
 	if degree > 2:
