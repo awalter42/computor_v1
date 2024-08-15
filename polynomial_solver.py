@@ -5,7 +5,18 @@ def make_member_dict(member):
 	m = {0: 0, 1: 0, 2: 0}
 	for e in member:
 		e = e.split('*')
-		if len(e) == 1 or e[1] == 'X^0':
+		if len(e) == 1 and 'X' in e[0]:
+			if '^' not in e[0]:
+				e[0] += '^1'
+			num = 1
+			if e[0][0] == '-':
+				num = -1
+				e[0] = e[0][1:]
+			if int(e[0][2:]) not in m.keys():
+				m[int(e[0][2:])] = num
+			else:
+				m[int(e[0][2:])] += num
+		elif len(e) == 1 or e[1] == 'X^0':
 			m[0] += float(e[0])
 		elif len(e) == 2 and (e[1] == 'X' or e[1] == 'X^1'):
 			m[1] += float(e[0])
